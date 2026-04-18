@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-04-18T18:34:23.716Z",
+  "appName": "WEIR",
+  "category": "saas",
+  "pages": [
+    {
+      "id": "home",
+      "name": "Home",
+      "route": "/home",
+      "filePath": "src/pages/Home.tsx",
+      "sections": []
+    },
+    {
+      "id": "login",
+      "name": "Login",
+      "route": "/login",
+      "filePath": "src/pages/Login.tsx",
+      "sections": []
+    },
+    {
+      "id": "signup",
+      "name": "Signup",
+      "route": "/signup",
+      "filePath": "src/pages/Signup.tsx",
+      "sections": []
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "route": "/dashboard",
+      "filePath": "src/pages/Dashboard.tsx",
+      "sections": [
+        "Refresh detections"
+      ]
+    },
+    {
+      "id": "detections",
+      "name": "Detections",
+      "route": "/detections",
+      "filePath": "src/pages/Detections.tsx",
+      "sections": [
+        "View source",
+        "Approve",
+        "Monetize",
+        "Takedown",
+        "Dismiss"
+      ]
+    },
+    {
+      "id": "licenses",
+      "name": "Licenses",
+      "route": "/licenses",
+      "filePath": "src/pages/Licenses.tsx",
+      "sections": [
+        "Delete license"
+      ]
+    },
+    {
+      "id": "earnings",
+      "name": "Earnings",
+      "route": "/earnings",
+      "filePath": "src/pages/Earnings.tsx",
+      "sections": []
+    },
+    {
+      "id": "disputes",
+      "name": "Disputes",
+      "route": "/disputes",
+      "filePath": "src/pages/Disputes.tsx",
+      "sections": []
+    },
+    {
+      "id": "settings",
+      "name": "Settings",
+      "route": "/settings",
+      "filePath": "src/pages/Settings.tsx",
+      "sections": []
+    },
+    {
+      "id": "pricing",
+      "name": "Pricing",
+      "route": "/pricing",
+      "filePath": "src/pages/Pricing.tsx",
+      "sections": []
+    }
+  ],
+  "features": [
+    "auth",
+    "crud"
+  ],
+  "completenessScore": 89,
+  "completenessGaps": [
+    "Missing page: Landing (/)"
+  ]
+}
