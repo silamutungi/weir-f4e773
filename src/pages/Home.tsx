@@ -24,9 +24,7 @@ export default function Home() {
       <section
         className="relative min-h-[100svh] flex items-center overflow-hidden"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1617037202148-ee39291799d7?ixid=M3w5MTM0MDN8MHwxfHNlYXJjaHwxfHxBJTIwY29uZmlkZW50JTIwY3JlYXRvciUyMHNtaWxpbmclMjB3aGlsZSUyMGNoZWNraW5nJTIwdGhlaXIlMjBwaG9uZSUyQyUyMHN1cnJ8ZW58MHwwfHx8MTc3NjUzNjkwNnww&ixlib=rb-4.1.0&w=1920&h=1080&fit=crop&crop=center&q=80&auto=format)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundColor: 'var(--color-ink)'
         }}
       >
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.35) 100%)' }} />
@@ -35,7 +33,7 @@ export default function Home() {
             Now detecting AI deepfakes
           </Badge>
           <h1 className="font-bold text-white mb-6" style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', lineHeight: '1.1', letterSpacing: '-0.02em', maxWidth: '720px' }}>
-            Your likeness earns money every time it appears online.
+            Your likeness earns you money every time it appears online.
           </h1>
           <p className="text-lg mb-10 max-w-xl" style={{ color: 'rgba(255,255,255,0.82)', lineHeight: '1.6' }}>
             WEIR detects unauthorized use of your name, image, and likeness in real time — then gives you one tap to take action, demand payment, or send a takedown.
