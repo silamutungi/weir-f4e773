@@ -24,6 +24,8 @@
 <!-- Brain appends after every edit -->
 <!-- Format: [date] instruction → files changed → outcome -->
 
+- [2026-04-18] Add a responsive mobile hamburger nav drawer to the site navigation component. Use useState for open → src/components/Navbar.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
