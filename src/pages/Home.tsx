@@ -24,7 +24,9 @@ export default function Home() {
       <section
         className="relative min-h-[100svh] flex items-center overflow-hidden"
         style={{
-          backgroundColor: 'var(--color-ink)'
+          backgroundImage: 'url(https://images.unsplash.com/photo-1662493724051-01a5046b530b?ixid=M3w5MTM0MDN8MHwxfHNlYXJjaHwxfHxjaGFuZ2UlMjBoZWFkbGluZXQlMjB5b3VyJTIwbGlrZW5lc3MlMjBlYXJuc3xlbnwwfDB8fHwxNzc2NTU0MDI5fDA&ixlib=rb-4.1.0&w=1920&h=1080&fit=crop&crop=center&q=80&auto=format)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
         }}
       >
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.35) 100%)' }} />
