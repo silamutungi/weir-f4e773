@@ -46,7 +46,7 @@ export default function Navbar() {
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link
             to="/"
-            className="flex items-center gap-2 font-bold text-lg text-white no-underline"
+            className="flex items-center gap-2 font-bold text-lg text-white"
             aria-label="WEIR home"
           >
             <Shield className="w-6 h-6" style={{ color: 'var(--color-info)' }} />
@@ -101,7 +101,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Backdrop overlay */}
+      {/* Backdrop overlay — closes drawer when tapped outside */}
       <div
         className="md:hidden fixed inset-0 z-40"
         style={{
@@ -111,6 +111,7 @@ export default function Navbar() {
           transition: 'opacity 250ms ease',
         }}
         aria-hidden="true"
+        onClick={() => setOpen(false)}
       />
 
       {/* Slide-in drawer — visible only below md */}
@@ -118,7 +119,7 @@ export default function Navbar() {
         ref={drawerRef}
         className="md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col"
         style={{
-          backgroundColor: 'var(--color-bg-surface)',
+          backgroundColor: 'var(--color-bg-surface, #ffffff)',
           boxShadow: '4px 0 24px rgba(15,23,42,0.18)',
           transform: open ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 280ms cubic-bezier(0.4, 0, 0.2, 1)',
@@ -129,12 +130,12 @@ export default function Navbar() {
         {/* Drawer header */}
         <div
           className="h-16 flex items-center px-6"
-          style={{ borderBottom: '1px solid var(--color-border)' }}
+          style={{ borderBottom: '1px solid var(--color-border, rgba(15,23,42,0.12))' }}
         >
           <Link
             to="/"
-            className="flex items-center gap-2 font-bold text-lg no-underline"
-            style={{ color: 'var(--color-text)' }}
+            className="flex items-center gap-2 font-bold text-lg"
+            style={{ color: 'var(--color-text, #0f172a)' }}
             onClick={() => setOpen(false)}
             aria-label="WEIR home"
           >
@@ -152,9 +153,9 @@ export default function Navbar() {
                 key={to}
                 to={to}
                 onClick={() => setOpen(false)}
-                className="flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
-                  color: isActive ? 'var(--color-accent)' : 'var(--color-text)',
+                  color: isActive ? 'var(--color-primary, #dc2626)' : 'var(--color-text, #0f172a)',
                   backgroundColor: isActive ? 'rgba(220,38,38,0.08)' : 'transparent',
                   fontWeight: isActive ? 600 : 500,
                 }}
