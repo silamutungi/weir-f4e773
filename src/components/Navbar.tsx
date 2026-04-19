@@ -156,8 +156,8 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
-                  color: isActive ? 'var(--color-primary, #dc2626)' : 'var(--color-text, #0f172a)',
-                  backgroundColor: isActive ? 'rgba(220,38,38,0.08)' : 'transparent',
+                  color: isActive ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
+                  backgroundColor: isActive ? 'rgba(var(--color-primary-rgb, 220,38,38),0.08)' : 'transparent',
                   fontWeight: isActive ? 600 : 500,
                 }}
               >
@@ -165,6 +165,19 @@ export default function Navbar() {
               </Link>
             )
           })}
+          {/* Start free link in drawer */}
+          <Link
+            to="/signup"
+            onClick={() => setOpen(false)}
+            className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
+            style={{
+              color: location.pathname === '/signup' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
+              backgroundColor: location.pathname === '/signup' ? 'rgba(220,38,38,0.08)' : 'transparent',
+              fontWeight: location.pathname === '/signup' ? 600 : 500,
+            }}
+          >
+            Start free
+          </Link>
         </nav>
 
         {/* Drawer CTA */}
