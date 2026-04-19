@@ -24,7 +24,7 @@ export default function Home() {
       <section
         className="relative min-h-[100svh] flex items-center overflow-hidden"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1662493724051-01a5046b530b?ixid=M3w5MTM0MDN8MHwxfHNlYXJjaHwxfHxjaGFuZ2UlMjBoZWFkbGluZXQlMjB5b3VyJTIwbGlrZW5lc3MlMjBlYXJuc3xlbnwwfDB8fHwxNzc2NTU0MDI5fDA&ixlib=rb-4.1.0&w=1920&h=1080&fit=crop&crop=center&q=80&auto=format)',
+          backgroundImage: 'url(https://images.unsplash.com/photo-1662493724051-01a5046b530b?ixid=M3w5MTM0MDN8MHwxfHNlYXJjaHwxfHxjaGFuZ2UlMjBoZWFkbGluZXIlMjB5b3VyJTIwbGlrZW5lc3MlMjBlYXJuc3xlbnwwfDB8fHwxNzc2NTU3MDYxfDA&ixlib=rb-4.1.0&w=1920&h=1080&fit=crop&crop=center&q=80&auto=format)',
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
