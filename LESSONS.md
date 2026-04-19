@@ -30,6 +30,8 @@
 
 - [2026-04-18] Add a responsive mobile hamburger nav drawer to the site navigation component. Use useState for open → src/components/Navbar.tsx
 
+- [2026-04-19] change hero headliner to: Your likeness earns you money every time it appears online. → src/pages/Home.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
