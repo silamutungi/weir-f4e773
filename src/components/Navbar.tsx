@@ -2,12 +2,26 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Shield } from 'lucide-react'
 import { Button } from './ui/button'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { type User } from '@supabase/supabase-js'
 
 export default function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
   const [open, setOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
   const drawerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) return
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -28,10 +42,14 @@ export default function Navbar() {
     setOpen(false)
   }, [location.pathname])
 
+  async function handleSignOut() {
+    if (isSupabaseConfigured) await supabase.auth.signOut()
+    navigate('/')
+  }
+
   const navLinks = [
     { to: '/features', label: 'Features' },
     { to: '/pricing', label: 'Pricing' },
-    { to: '/login', label: 'Sign in' },
   ]
 
   return (
@@ -67,14 +85,35 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            <Button
-              size="sm"
-              onClick={() => navigate('/signup')}
-              style={{ backgroundColor: 'var(--color-primary)', color: '#ffffff' }}
-              className="font-semibold"
-            >
-              Start free
-            </Button>
+            {user ? (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={handleSignOut}
+                style={{ color: 'rgba(241,245,249,0.72)' }}
+                className="font-semibold hover:text-white"
+              >
+                Sign out
+              </Button>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-sm font-medium hover:text-white transition-colors"
+                  style={{ color: 'rgba(241,245,249,0.72)' }}
+                >
+                  Sign in
+                </Link>
+                <Button
+                  size="sm"
+                  onClick={() => navigate('/signup')}
+                  style={{ backgroundColor: 'var(--color-primary)', color: '#ffffff' }}
+                  className="font-semibold"
+                >
+                  Start free
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Hamburger button — visible only below md */}
@@ -166,34 +205,62 @@ export default function Navbar() {
               </Link>
             )
           })}
-          {/* Start free link in drawer */}
-          <Link
-            to="/signup"
-            onClick={() => setOpen(false)}
-            className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
-            style={{
-              color: location.pathname === '/signup' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
-              backgroundColor: location.pathname === '/signup' ? 'rgba(220,38,38,0.08)' : 'transparent',
-              fontWeight: location.pathname === '/signup' ? 600 : 500,
-            }}
-          >
-            Start free
-          </Link>
+          {user ? (
+            <button
+              onClick={() => { setOpen(false); handleSignOut() }}
+              className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors text-left"
+              style={{
+                color: 'var(--color-text, #0f172a)',
+                fontWeight: 500,
+              }}
+            >
+              Sign out
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                onClick={() => setOpen(false)}
+                className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
+                style={{
+                  color: location.pathname === '/login' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
+                  backgroundColor: location.pathname === '/login' ? 'rgba(220,38,38,0.08)' : 'transparent',
+                  fontWeight: location.pathname === '/login' ? 600 : 500,
+                }}
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/signup"
+                onClick={() => setOpen(false)}
+                className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
+                style={{
+                  color: location.pathname === '/signup' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
+                  backgroundColor: location.pathname === '/signup' ? 'rgba(220,38,38,0.08)' : 'transparent',
+                  fontWeight: location.pathname === '/signup' ? 600 : 500,
+                }}
+              >
+                Start free
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Drawer CTA */}
-        <div className="px-6 pb-8">
-          <Button
-            className="w-full font-semibold"
-            onClick={() => {
-              setOpen(false)
-              navigate('/signup')
-            }}
-            style={{ backgroundColor: 'var(--color-primary)', color: '#ffffff' }}
-          >
-            Start free
-          </Button>
-        </div>
+        {!user && (
+          <div className="px-6 pb-8">
+            <Button
+              className="w-full font-semibold"
+              onClick={() => {
+                setOpen(false)
+                navigate('/signup')
+              }}
+              style={{ backgroundColor: 'var(--color-primary)', color: '#ffffff' }}
+            >
+              Start free
+            </Button>
+          </div>
+        )}
       </div>
     </>
   )
