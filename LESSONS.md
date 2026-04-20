@@ -32,6 +32,8 @@
 
 - [2026-04-19] change hero headliner to: Your likeness earns you money every time it appears online. → src/pages/Home.tsx
 
+- [2026-04-20] Add navigation to → src/components/Navbar.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
