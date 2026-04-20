@@ -29,6 +29,7 @@ export default function Navbar() {
   }, [location.pathname])
 
   const navLinks = [
+    { to: '/features', label: 'Features' },
     { to: '/pricing', label: 'Pricing' },
     { to: '/login', label: 'Sign in' },
   ]
