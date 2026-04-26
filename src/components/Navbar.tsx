@@ -9,6 +9,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
   const [open, setOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const drawerRef = useRef<HTMLDivElement>(null)
 
@@ -39,7 +40,23 @@ export default function Navbar() {
   }, [open])
 
   useEffect(() => {
+    if (!isOpen) return
+    function handleClickOutside(e: MouseEvent | TouchEvent) {
+      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [isOpen])
+
+  useEffect(() => {
     setOpen(false)
+    setIsOpen(false)
   }, [location.pathname])
 
   const navLinks = [
@@ -115,12 +132,12 @@ export default function Navbar() {
           {/* Hamburger button — visible only below md */}
           <button
             className="md:hidden flex items-center justify-center w-10 h-10 rounded"
-            onClick={() => setOpen((prev) => !prev)}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
+            onClick={() => setIsOpen((prev) => !prev)}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isOpen}
             style={{ color: 'white' }}
           >
-            {open ? (
+            {isOpen ? (
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="4" y1="4" x2="16" y2="16" />
                 <line x1="16" y1="4" x2="4" y2="16" />
@@ -141,12 +158,12 @@ export default function Navbar() {
         className="md:hidden fixed inset-0 z-40"
         style={{
           backgroundColor: 'rgba(15,23,42,0.5)',
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? 'auto' : 'none',
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? 'auto' : 'none',
           transition: 'opacity 250ms ease',
         }}
         aria-hidden="true"
-        onClick={() => setOpen(false)}
+        onClick={() => setIsOpen(false)}
       />
 
       {/* Slide-in drawer */}
@@ -154,13 +171,13 @@ export default function Navbar() {
         ref={drawerRef}
         className="md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col"
         style={{
-          backgroundColor: 'var(--color-bg-surface, #ffffff)',
+          backgroundColor: 'var(--color-background, #ffffff)',
           boxShadow: '4px 0 24px rgba(15,23,42,0.18)',
-          transform: open ? 'translateX(0)' : 'translateX(-100%)',
+          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 280ms cubic-bezier(0.4, 0, 0.2, 1)',
           willChange: 'transform',
         }}
-        aria-hidden={!open}
+        aria-hidden={!isOpen}
       >
         {/* Drawer header */}
         <div
@@ -171,7 +188,7 @@ export default function Navbar() {
             to="/"
             className="flex items-center gap-2 font-bold text-lg"
             style={{ color: 'var(--color-text, #0f172a)', textDecoration: 'none', cursor: 'pointer' }}
-            onClick={() => setOpen(false)}
+            onClick={() => setIsOpen(false)}
             aria-label="WEIR home"
           >
             <Shield className="w-6 h-6" style={{ color: 'var(--color-info)' }} />
@@ -187,7 +204,7 @@ export default function Navbar() {
               <Link
                 key={to}
                 to={to}
-                onClick={() => setOpen(false)}
+                onClick={() => setIsOpen(false)}
                 className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
                   color: isActive ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
@@ -201,7 +218,7 @@ export default function Navbar() {
           })}
           {user ? (
             <button
-              onClick={() => { setOpen(false); navigate('/dashboard') }}
+              onClick={() => { setIsOpen(false); navigate('/dashboard') }}
               className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors text-left font-semibold"
               style={{
                 color: 'var(--color-primary)',
@@ -214,7 +231,7 @@ export default function Navbar() {
             <>
               <Link
                 to="/login"
-                onClick={() => setOpen(false)}
+                onClick={() => setIsOpen(false)}
                 className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
                   color: location.pathname === '/login' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
@@ -226,7 +243,7 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/signup"
-                onClick={() => setOpen(false)}
+                onClick={() => setIsOpen(false)}
                 className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
                   color: location.pathname === '/signup' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
@@ -246,7 +263,7 @@ export default function Navbar() {
             <Button
               className="w-full font-semibold"
               onClick={() => {
-                setOpen(false)
+                setIsOpen(false)
                 navigate('/signup')
               }}
               style={{ backgroundColor: 'var(--color-primary)', color: '#ffffff' }}
