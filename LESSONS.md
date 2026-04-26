@@ -58,6 +58,8 @@
 
 - [2026-04-26] The dashboard stats show for a second then reset to zero because there is still a useEffect or async → src/pages/Dashboard.tsx
 
+- [2026-04-26] The dashboard stats are still showing zeros even though Dashboard.tsx has hardcoded values. The data → src/pages/Dashboard.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
