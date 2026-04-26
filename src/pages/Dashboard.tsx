@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { type Detection } from '../types'
 import AppLayout from '../components/AppLayout'
