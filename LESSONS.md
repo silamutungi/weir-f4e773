@@ -54,6 +54,8 @@
 
 - [2026-04-26] Remove the unused handleSignOut variable from src/components/Navbar.tsx to fix the TypeScript build  → src/components/Navbar.tsx
 
+- [2026-04-26] The dashboard stats show for a second then reset to zero because there is still a useEffect or async → src/pages/Dashboard.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
