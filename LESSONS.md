@@ -30,6 +30,8 @@
 
 - [2026-04-26] Pattern after 15 edits: They're obsessed with getting a working demo with realistic mock data on screen quickly, treating hardcoded placeholder values as the critical path to a presentable product.
 
+- [2026-04-26] Pattern after 15 edits: They're obsessively trying to get a working demo dashboard with hardcoded mock data displayed to users, repeatedly struggling with the same data-fetching problems and navigation flows.
+
 ## Edit History
 <!-- Brain appends after every edit -->
 <!-- Format: [date] instruction → files changed → outcome -->
