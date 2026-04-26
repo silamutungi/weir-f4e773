@@ -126,13 +126,11 @@ export default function Navbar() {
             style={{ color: 'white' }}
           >
             {open ? (
-              /* X icon */
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="4" y1="4" x2="16" y2="16" />
                 <line x1="16" y1="4" x2="4" y2="16" />
               </svg>
             ) : (
-              /* Three horizontal lines hamburger */
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="3" y1="5" x2="17" y2="5" />
                 <line x1="3" y1="10" x2="17" y2="10" />
@@ -143,7 +141,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Backdrop overlay — closes drawer when tapped outside */}
+      {/* Backdrop overlay */}
       <div
         className="md:hidden fixed inset-0 z-40"
         style={{
@@ -156,7 +154,7 @@ export default function Navbar() {
         onClick={() => setOpen(false)}
       />
 
-      {/* Slide-in drawer — visible only below md */}
+      {/* Slide-in drawer */}
       <div
         ref={drawerRef}
         className="md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col"
