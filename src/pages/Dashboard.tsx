@@ -23,6 +23,12 @@ const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   disputed: { label: 'Disputed', color: 'var(--color-accent)' }
 }
 
+const DETECTION_AMOUNTS: Record<string, string> = {
+  '1': '$0 (pending)',
+  '2': '$847.50',
+  '3': '$0 (disputed)'
+}
+
 export default function Dashboard() {
   const navigate = useNavigate()
   const detections = SEED_DETECTIONS
@@ -68,6 +74,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>{DETECTION_AMOUNTS[d.id]}</span>
                   <Badge style={{ backgroundColor: `${STATUS_CONFIG[d.status]?.color}18`, color: STATUS_CONFIG[d.status]?.color, border: `1px solid ${STATUS_CONFIG[d.status]?.color}40` }}>
                     {STATUS_CONFIG[d.status]?.label}
                   </Badge>
