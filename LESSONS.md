@@ -28,6 +28,8 @@
 
 - [2026-04-26] Pattern after 15 edits: They're obsessively replacing all dynamic/database-driven functionality with hardcoded demo data to create a polished, working visual prototype regardless of actual backend connectivity.
 
+- [2026-04-26] Pattern after 15 edits: They're obsessed with getting a working demo with realistic mock data on screen quickly, treating hardcoded placeholder values as the critical path to a presentable product.
+
 ## Edit History
 <!-- Brain appends after every edit -->
 <!-- Format: [date] instruction → files changed → outcome -->
