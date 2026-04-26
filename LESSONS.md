@@ -50,6 +50,8 @@
 
 - [2026-04-26] Wrap the app logo in the nav component with a React Router Link to '/' so clicking it returns to the → src/components/Navbar.tsx
 
+- [2026-04-26] "Revert the navbar to working state — remove any broken changes → src/components/Navbar.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
