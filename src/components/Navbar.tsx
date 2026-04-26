@@ -42,11 +42,6 @@ export default function Navbar() {
     setOpen(false)
   }, [location.pathname])
 
-  async function handleSignOut() {
-    if (isSupabaseConfigured) await supabase.auth.signOut()
-    navigate('/')
-  }
-
   const navLinks = [
     { to: '/features', label: 'Features' },
     { to: '/pricing', label: 'Pricing' },
