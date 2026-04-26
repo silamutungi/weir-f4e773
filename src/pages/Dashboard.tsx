@@ -13,9 +13,7 @@ import { formatCurrency, formatRelativeTime } from '../lib/utils'
 const SEED_DETECTIONS: Detection[] = [
   { id: '1', user_id: 'demo', platform: 'Instagram', url: 'https://instagram.com/p/demo1', title: 'Nike ad using your photo in a reel', thumbnail_url: null, status: 'pending', match_confidence: 97, detected_at: new Date(Date.now() - 3600000).toISOString(), created_at: new Date(Date.now() - 3600000).toISOString(), deleted_at: null },
   { id: '2', user_id: 'demo', platform: 'YouTube', url: 'https://youtube.com/watch?v=demo2', title: 'Fitness brand thumbnail featuring your likeness', thumbnail_url: null, status: 'monetized', match_confidence: 92, detected_at: new Date(Date.now() - 86400000).toISOString(), created_at: new Date(Date.now() - 86400000).toISOString(), deleted_at: null },
-  { id: '3', user_id: 'demo', platform: 'TikTok', url: 'https://tiktok.com/@demo3', title: 'AI-generated deepfake in sports clip', thumbnail_url: null, status: 'takedown', match_confidence: 88, detected_at: new Date(Date.now() - 172800000).toISOString(), created_at: new Date(Date.now() - 172800000).toISOString(), deleted_at: null },
-  { id: '4', user_id: 'demo', platform: 'Twitter', url: 'https://twitter.com/demo4', title: 'Crypto project using your image in banner', thumbnail_url: null, status: 'disputed', match_confidence: 95, detected_at: new Date(Date.now() - 259200000).toISOString(), created_at: new Date(Date.now() - 259200000).toISOString(), deleted_at: null },
-  { id: '5', user_id: 'demo', platform: 'Facebook', url: 'https://facebook.com/demo5', title: 'Local business ad with your photo', thumbnail_url: null, status: 'approved', match_confidence: 99, detected_at: new Date(Date.now() - 345600000).toISOString(), created_at: new Date(Date.now() - 345600000).toISOString(), deleted_at: null }
+  { id: '3', user_id: 'demo', platform: 'TikTok', url: 'https://tiktok.com/@demo3', title: 'AI-generated deepfake in sports clip', thumbnail_url: null, status: 'takedown', match_confidence: 88, detected_at: new Date(Date.now() - 172800000).toISOString(), created_at: new Date(Date.now() - 172800000).toISOString(), deleted_at: null }
 ]
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
@@ -31,7 +29,7 @@ export default function Dashboard() {
   const [detections, setDetections] = useState<Detection[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [totalEarnings, setTotalEarnings] = useState(2847.50)
+  const [totalEarnings, setTotalEarnings] = useState(2400)
 
   async function loadData() {
     setLoading(true)
@@ -61,8 +59,10 @@ export default function Dashboard() {
 
   useEffect(() => { loadData() }, [])
 
-  const pending = detections.filter((d) => d.status === 'pending').length
-  const monetized = detections.filter((d) => d.status === 'monetized').length
+  const pending = isSupabaseConfigured ? detections.filter((d) => d.status === 'pending').length : 2
+  const monetized = isSupabaseConfigured ? detections.filter((d) => d.status === 'monetized').length : 12
+  const totalDetections = isSupabaseConfigured ? detections.length : 8
+  const displayEarnings = isSupabaseConfigured ? totalEarnings : 2400
 
   return (
     <AppLayout>
@@ -78,9 +78,9 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
           { icon: <AlertTriangle className="w-5 h-5" />, label: 'Pending Review', value: pending.toString(), color: 'var(--color-warning)' },
-          { icon: <DollarSign className="w-5 h-5" />, label: 'Total Earned', value: formatCurrency(totalEarnings), color: 'var(--color-success)' },
+          { icon: <DollarSign className="w-5 h-5" />, label: 'Total Earned', value: formatCurrency(displayEarnings), color: 'var(--color-success)' },
           { icon: <CheckCircle className="w-5 h-5" />, label: 'Monetized', value: monetized.toString(), color: 'var(--color-info)' },
-          { icon: <Shield className="w-5 h-5" />, label: 'Total Detections', value: detections.length.toString(), color: 'var(--color-primary)' }
+          { icon: <Shield className="w-5 h-5" />, label: 'Total Detections', value: totalDetections.toString(), color: 'var(--color-primary)' }
         ].map((m) => (
           <Card key={m.label} className="border" style={{ backgroundColor: 'var(--color-bg-surface)', borderColor: 'var(--color-border)' }}>
             <CardContent className="pt-5">
