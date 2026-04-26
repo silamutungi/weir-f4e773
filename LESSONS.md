@@ -34,6 +34,8 @@
 
 - [2026-04-20] Add navigation to → src/components/Navbar.tsx
 
+- [2026-04-26] Add navigation to sign in and sign out. Use same navigation as homepage → src/components/Navbar.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
