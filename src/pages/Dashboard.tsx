@@ -28,13 +28,20 @@ const DETECTION_AMOUNTS: Record<string, string> = {
   '3': '$0 (disputed)'
 }
 
-export default function Dashboard() {
+interface DashboardProps {
+  pendingReview?: number
+  totalEarned?: number
+  monetized?: number
+  totalDetections?: number
+}
+
+export default function Dashboard({ pendingReview, totalEarned, monetized, totalDetections }: DashboardProps) {
   const navigate = useNavigate()
   const detections = SEED_DETECTIONS
-  const pending = 2
-  const monetized = 12
-  const totalDetections = 8
-  const displayEarnings = 2400
+  const pending = pendingReview ?? 2
+  const monetizedCount = monetized ?? 12
+  const detectionsCount = totalDetections ?? 8
+  const displayEarnings = totalEarned ?? 2400
 
   return (
     <AppLayout>
@@ -46,8 +53,8 @@ export default function Dashboard() {
         {[
           { icon: <AlertTriangle className="w-5 h-5" />, label: 'Pending Review', value: pending.toString(), color: 'var(--color-warning)' },
           { icon: <DollarSign className="w-5 h-5" />, label: 'Total Earned', value: formatCurrency(displayEarnings), color: 'var(--color-success)' },
-          { icon: <CheckCircle className="w-5 h-5" />, label: 'Monetized', value: monetized.toString(), color: 'var(--color-info)' },
-          { icon: <Shield className="w-5 h-5" />, label: 'Total Detections', value: totalDetections.toString(), color: 'var(--color-primary)' }
+          { icon: <CheckCircle className="w-5 h-5" />, label: 'Monetized', value: monetizedCount.toString(), color: 'var(--color-info)' },
+          { icon: <Shield className="w-5 h-5" />, label: 'Total Detections', value: detectionsCount.toString(), color: 'var(--color-primary)' }
         ].map((m) => (
           <Card key={m.label} className="border" style={{ backgroundColor: 'var(--color-bg-surface)', borderColor: 'var(--color-border)' }}>
             <CardContent className="pt-5">
