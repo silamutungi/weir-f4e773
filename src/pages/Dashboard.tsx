@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { type Detection } from '../types'
 import AppLayout from '../components/AppLayout'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
-import { Shield, DollarSign, AlertTriangle, CheckCircle, Loader2, RefreshCw } from 'lucide-react'
+import { Shield, DollarSign, AlertTriangle, CheckCircle } from 'lucide-react'
 
 import { formatCurrency, formatRelativeTime } from '../lib/utils'
 
@@ -26,51 +25,14 @@ const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const [detections, setDetections] = useState<Detection[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [totalEarnings, setTotalEarnings] = useState(2400)
-
-  async function loadData() {
-    setLoading(true)
-    setError(null)
-    if (!isSupabaseConfigured) {
-      await new Promise((r) => setTimeout(r, 600))
-      setDetections(SEED_DETECTIONS)
-      setLoading(false)
-      return
-    }
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) { navigate('/login'); return }
-      const result = await (supabase.from('weir_detections').select('*').eq('user_id', session.user.id).is('deleted_at', null).order('detected_at', { ascending: false }).limit(10) as any)
-      if (result.error) throw new Error(result.error.message)
-      setDetections(result.data ?? [])
-      const earningsResult = await (supabase.from('weir_earnings').select('amount_usd').eq('user_id', session.user.id) as any)
-      if (!earningsResult.error && earningsResult.data) {
-        setTotalEarnings(earningsResult.data.reduce((s: number, r: { amount_usd: number }) => s + r.amount_usd, 0))
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load data')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => { loadData() }, [])
-
-  const pending = isSupabaseConfigured ? detections.filter((d) => d.status === 'pending').length : 2
-  const monetized = isSupabaseConfigured ? detections.filter((d) => d.status === 'monetized').length : 12
-  const totalDetections = isSupabaseConfigured ? detections.length : 8
-  const displayEarnings = isSupabaseConfigured ? totalEarnings : 2400
+  const detections = SEED_DETECTIONS
+  const pending = 2
+  const monetized = 12
+  const totalDetections = 8
+  const displayEarnings = 2400
 
   return (
     <AppLayout>
-      {!isSupabaseConfigured && (
-        <div className="mb-6 px-4 py-3 rounded-lg text-sm border" style={{ backgroundColor: 'rgba(37,99,235,0.08)', borderColor: 'rgba(37,99,235,0.25)', color: 'var(--color-info)' }}>
-          Viewing sample data — connect your database to go live.
-        </div>
-      )}
       <div className="mb-8">
         <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text)' }}>Dashboard</h1>
         <p style={{ color: 'var(--color-text-secondary)' }}>Your likeness protection at a glance</p>
@@ -93,53 +55,30 @@ export default function Dashboard() {
       <Card className="border" style={{ backgroundColor: 'var(--color-bg-surface)', borderColor: 'var(--color-border)' }}>
         <CardHeader className="flex flex-row items-center justify-between pb-4">
           <CardTitle style={{ color: 'var(--color-text)' }}>Recent Detections</CardTitle>
-          <Button variant="ghost" size="sm" onClick={loadData} disabled={loading} aria-label="Refresh detections">
-            <RefreshCw className="w-4 h-4" />
-          </Button>
         </CardHeader>
         <CardContent>
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--color-primary)' }} />
-            </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <p className="mb-4" style={{ color: 'var(--color-error)' }}>{error}</p>
-              <Button variant="outline" size="sm" onClick={loadData}>Retry</Button>
-            </div>
-          ) : detections.length === 0 ? (
-            <div className="text-center py-12">
-              <Shield className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--color-border)' }} />
-              <p className="font-medium mb-2" style={{ color: 'var(--color-text)' }}>No detections yet</p>
-              <p className="text-sm mb-4" style={{ color: 'var(--color-text-muted)' }}>Add your platforms to start scanning for unauthorized use.</p>
-              <Button onClick={() => navigate('/settings')} style={{ backgroundColor: 'var(--color-primary)', color: '#ffffff' }}>Set up monitoring</Button>
-            </div>
-          ) : (
-            <div className="divide-y" style={{ borderColor: 'var(--color-border)' }}>
-              {detections.map((d) => (
-                <div key={d.id} className="py-4 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-2 h-2 rounded-full flex-shrink-0 pulse-dot" style={{ backgroundColor: d.status === 'pending' ? 'var(--color-warning)' : 'var(--color-success)' }} />
-                    <div className="min-w-0">
-                      <p className="font-medium text-sm truncate" style={{ color: 'var(--color-text)' }}>{d.title}</p>
-                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{d.platform} · {formatRelativeTime(d.detected_at)} · {d.match_confidence}% match</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <Badge style={{ backgroundColor: `${STATUS_CONFIG[d.status]?.color}18`, color: STATUS_CONFIG[d.status]?.color, border: `1px solid ${STATUS_CONFIG[d.status]?.color}40` }}>
-                      {STATUS_CONFIG[d.status]?.label}
-                    </Badge>
-                    <Button variant="ghost" size="sm" onClick={() => navigate('/detections')} style={{ color: 'var(--color-primary)' }}>Review</Button>
+          <div className="divide-y" style={{ borderColor: 'var(--color-border)' }}>
+            {detections.map((d) => (
+              <div key={d.id} className="py-4 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-2 h-2 rounded-full flex-shrink-0 pulse-dot" style={{ backgroundColor: d.status === 'pending' ? 'var(--color-warning)' : 'var(--color-success)' }} />
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm truncate" style={{ color: 'var(--color-text)' }}>{d.title}</p>
+                    <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{d.platform} · {formatRelativeTime(d.detected_at)} · {d.match_confidence}% match</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-          {detections.length > 0 && (
-            <div className="pt-4">
-              <Button variant="outline" className="w-full" onClick={() => navigate('/detections')}>View all detections</Button>
-            </div>
-          )}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Badge style={{ backgroundColor: `${STATUS_CONFIG[d.status]?.color}18`, color: STATUS_CONFIG[d.status]?.color, border: `1px solid ${STATUS_CONFIG[d.status]?.color}40` }}>
+                    {STATUS_CONFIG[d.status]?.label}
+                  </Badge>
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/detections')} style={{ color: 'var(--color-primary)' }}>Review</Button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="pt-4">
+            <Button variant="outline" className="w-full" onClick={() => navigate('/detections')}>View all detections</Button>
+          </div>
         </CardContent>
       </Card>
     </AppLayout>
