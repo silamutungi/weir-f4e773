@@ -9,6 +9,8 @@ import Detections from './pages/Detections'
 import Licenses from './pages/Licenses'
 import Earnings from './pages/Earnings'
 import Disputes from './pages/Disputes'
+import Support from './pages/Support'
+import Support2 from './pages/Support2'
 import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
@@ -19,6 +21,8 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/support-help" element={<Support2 />} />
         <Route
           path="/dashboard"
           element={

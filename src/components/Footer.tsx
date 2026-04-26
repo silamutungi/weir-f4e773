@@ -17,8 +17,8 @@ export default function Footer() {
             <Link to="/pricing" className="hover:underline">Pricing</Link>
             <Link to="/login" className="hover:underline">Sign in</Link>
             <Link to="/signup" className="hover:underline">Sign up</Link>
-            <a href="mailto:support@weir.app" className="hover:underline">Support</a>
-            <a href="mailto:disputes@weir.app" className="hover:underline">Disputes</a>
+            <Link to="/support" className="hover:underline">Support</Link>
+            <Link to="/disputes" className="hover:underline">Disputes</Link>
           </div>
         </div>
         <div className="mt-8 pt-6 border-t flex flex-col md:flex-row items-start md:items-center justify-between gap-2" style={{ borderColor: 'var(--color-border)' }}>
