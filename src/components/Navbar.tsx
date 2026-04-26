@@ -86,15 +86,23 @@ export default function Navbar() {
               </Link>
             ))}
             {user ? (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={handleSignOut}
-                style={{ color: 'rgba(241,245,249,0.72)' }}
-                className="font-semibold hover:text-white"
-              >
-                Sign out
-              </Button>
+              <>
+                <span
+                  className="text-sm font-medium"
+                  style={{ color: 'rgba(241,245,249,0.72)' }}
+                >
+                  {user.email}
+                </span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleSignOut}
+                  style={{ color: 'rgba(241,245,249,0.72)' }}
+                  className="font-semibold hover:text-white"
+                >
+                  Sign out
+                </Button>
+              </>
             ) : (
               <>
                 <Link
@@ -206,16 +214,24 @@ export default function Navbar() {
             )
           })}
           {user ? (
-            <button
-              onClick={() => { setOpen(false); handleSignOut() }}
-              className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors text-left"
-              style={{
-                color: 'var(--color-text, #0f172a)',
-                fontWeight: 500,
-              }}
-            >
-              Sign out
-            </button>
+            <>
+              <div
+                className="flex items-center px-3 py-3 text-sm"
+                style={{ color: 'var(--color-text, #0f172a)', fontWeight: 500, opacity: 0.6 }}
+              >
+                {user.email}
+              </div>
+              <button
+                onClick={() => { setOpen(false); handleSignOut() }}
+                className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors text-left"
+                style={{
+                  color: 'var(--color-text, #0f172a)',
+                  fontWeight: 500,
+                }}
+              >
+                Sign out
+              </button>
+            </>
           ) : (
             <>
               <Link
