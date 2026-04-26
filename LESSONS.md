@@ -26,6 +26,8 @@
 
 - [2026-04-26] Pattern after 9 edits: This founder is obsessively focused on creating a complete, navigable product experience that demonstrates real user value through concrete monetization numbers and seamless logged-in flows.
 
+- [2026-04-26] Pattern after 15 edits: They're obsessively replacing all dynamic/database-driven functionality with hardcoded demo data to create a polished, working visual prototype regardless of actual backend connectivity.
+
 ## Edit History
 <!-- Brain appends after every edit -->
 <!-- Format: [date] instruction → files changed → outcome -->
