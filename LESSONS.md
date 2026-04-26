@@ -42,6 +42,8 @@
 
 - [2026-04-26] If the user is signed in, show a 'Go to dashboard' button in the navbar instead of 'Sign in' and 'St → src/components/Navbar.tsx
 
+- [2026-04-26] "If the user is already signed in, clicking the logo should go to /dashboard instead of the homepage → src/components/Navbar.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
