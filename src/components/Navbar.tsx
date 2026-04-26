@@ -66,7 +66,7 @@ export default function Navbar() {
           <Link
             to="/"
             className="flex items-center gap-2 font-bold text-lg text-white"
-            style={{ textDecoration: 'none' }}
+            style={{ textDecoration: 'none', cursor: 'pointer' }}
             aria-label="WEIR home"
           >
             <Shield className="w-6 h-6" style={{ color: 'var(--color-info)' }} />
@@ -184,7 +184,7 @@ export default function Navbar() {
           <Link
             to="/"
             className="flex items-center gap-2 font-bold text-lg"
-            style={{ color: 'var(--color-text, #0f172a)', textDecoration: 'none' }}
+            style={{ color: 'var(--color-text, #0f172a)', textDecoration: 'none', cursor: 'pointer' }}
             onClick={() => setOpen(false)}
             aria-label="WEIR home"
           >
