@@ -52,6 +52,8 @@ export default function Navbar() {
     { to: '/pricing', label: 'Pricing' },
   ]
 
+  const logoDestination = user ? '/dashboard' : '/'
+
   return (
     <>
       <nav
@@ -64,7 +66,7 @@ export default function Navbar() {
       >
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link
-            to="/"
+            to={logoDestination}
             className="flex items-center gap-2 font-bold text-lg text-white"
             style={{ textDecoration: 'none', cursor: 'pointer' }}
             aria-label="WEIR home"
@@ -175,7 +177,7 @@ export default function Navbar() {
           style={{ borderBottom: '1px solid var(--color-border, rgba(15,23,42,0.12))' }}
         >
           <Link
-            to="/"
+            to={logoDestination}
             className="flex items-center gap-2 font-bold text-lg"
             style={{ color: 'var(--color-text, #0f172a)', textDecoration: 'none', cursor: 'pointer' }}
             onClick={() => setOpen(false)}
