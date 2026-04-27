@@ -29,7 +29,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen flex" style={{ backgroundColor: 'var(--color-bg)' }}>
       <aside className="hidden md:flex flex-col w-60 flex-shrink-0 border-r" style={{ backgroundColor: 'var(--color-bg-surface)', borderColor: 'var(--color-border)' }}>
         <div className="h-16 flex items-center px-5 border-b" style={{ borderColor: 'var(--color-border)' }}>
-          <Link to="/" className="flex items-center gap-2 font-bold text-lg" style={{ color: 'var(--color-text)', textDecoration: 'none' }}>
+          <Link to="/dashboard" className="flex items-center gap-2 font-bold text-lg" style={{ color: 'var(--color-text)', textDecoration: 'none' }}>
             <Shield className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />
             WEIR
           </Link>
@@ -62,7 +62,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
       <div className="flex-1 flex flex-col min-w-0">
         <header className="md:hidden h-14 flex items-center justify-between px-4 border-b" style={{ backgroundColor: 'var(--color-bg-surface)', borderColor: 'var(--color-border)' }}>
-          <Link to="/" className="flex items-center gap-2 font-bold" style={{ color: 'var(--color-text)', textDecoration: 'none' }}>
+          <Link to="/dashboard" className="flex items-center gap-2 font-bold" style={{ color: 'var(--color-text)', textDecoration: 'none' }}>
             <Shield className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />
             WEIR
           </Link>

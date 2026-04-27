@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { type ReactNode } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { Loader2 } from 'lucide-react'
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const [checking, setChecking] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
@@ -28,5 +29,9 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
     )
   }
 
-  return authenticated ? <>{children}</> : <Navigate to="/login" replace />
+  if (!authenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />
+  }
+
+  return <>{children}</>
 }
