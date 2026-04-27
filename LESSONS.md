@@ -70,6 +70,8 @@
 
 - [2026-04-27] Add a responsive mobile hamburger nav drawer to the site navigation component. Use useState for open → src/components/Navbar.tsx
 
+- [2026-04-27] Connect detection matching output to dashboard data binding → src/context/DetectionsContext.tsx, src/pages/Detections.tsx, src/pages/Dashboard.tsx
+
 ## Brain Observations
 <!-- Proactive hints Brain has surfaced -->
 <!-- Format: [date] category: observation -->
