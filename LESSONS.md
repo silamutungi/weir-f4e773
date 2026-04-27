@@ -32,6 +32,8 @@
 
 - [2026-04-26] Pattern after 15 edits: They're obsessively trying to get a working demo dashboard with hardcoded mock data displayed to users, repeatedly struggling with the same data-fetching problems and navigation flows.
 
+- [2026-04-27] Pattern after 15 edits: They're obsessively trying to get a working demo dashboard with realistic mock data displayed to users, repeatedly fighting against database fetches that keep breaking it and getting frustrated enough to issue the same instruction multiple times.
+
 ## Edit History
 <!-- Brain appends after every edit -->
 <!-- Format: [date] instruction → files changed → outcome -->
