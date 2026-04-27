@@ -8,7 +8,6 @@ import { type User } from '@supabase/supabase-js'
 export default function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [open, setOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -23,21 +22,6 @@ export default function Navbar() {
     })
     return () => subscription.unsubscribe()
   }, [])
-
-  useEffect(() => {
-    if (!open) return
-    function handleClickOutside(e: MouseEvent | TouchEvent) {
-      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    document.addEventListener('touchstart', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('touchstart', handleClickOutside)
-    }
-  }, [open])
 
   useEffect(() => {
     if (!isOpen) return
@@ -55,7 +39,6 @@ export default function Navbar() {
   }, [isOpen])
 
   useEffect(() => {
-    setOpen(false)
     setIsOpen(false)
   }, [location.pathname])
 
@@ -207,9 +190,9 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
-                  color: isActive ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
-                  backgroundColor: isActive ? 'rgba(var(--color-primary-rgb, 220,38,38),0.08)' : 'transparent',
-                  fontWeight: isActive ? 600 : 500,
+                  color: isActive ? 'var(--color-primary, #f97316)' : 'var(--color-text, #374151)',
+                  backgroundColor: isActive ? 'rgba(249,115,22,0.08)' : 'transparent',
+                  fontWeight: isActive ? 700 : 500,
                 }}
               >
                 {label}
@@ -221,8 +204,8 @@ export default function Navbar() {
               onClick={() => { setIsOpen(false); navigate('/dashboard') }}
               className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors text-left font-semibold"
               style={{
-                color: 'var(--color-primary)',
-                backgroundColor: 'rgba(var(--color-primary-rgb, 220,38,38),0.08)',
+                color: 'var(--color-primary, #f97316)',
+                backgroundColor: 'rgba(249,115,22,0.08)',
               }}
             >
               Go to dashboard
@@ -234,9 +217,9 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
-                  color: location.pathname === '/login' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
-                  backgroundColor: location.pathname === '/login' ? 'rgba(220,38,38,0.08)' : 'transparent',
-                  fontWeight: location.pathname === '/login' ? 600 : 500,
+                  color: location.pathname === '/login' ? 'var(--color-primary, #f97316)' : 'var(--color-text, #374151)',
+                  backgroundColor: location.pathname === '/login' ? 'rgba(249,115,22,0.08)' : 'transparent',
+                  fontWeight: location.pathname === '/login' ? 700 : 500,
                 }}
               >
                 Sign in
@@ -246,9 +229,9 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className="flex items-center px-3 py-3 rounded-lg text-sm transition-colors"
                 style={{
-                  color: location.pathname === '/signup' ? 'var(--color-primary)' : 'var(--color-text, #0f172a)',
-                  backgroundColor: location.pathname === '/signup' ? 'rgba(220,38,38,0.08)' : 'transparent',
-                  fontWeight: location.pathname === '/signup' ? 600 : 500,
+                  color: location.pathname === '/signup' ? 'var(--color-primary, #f97316)' : 'var(--color-text, #374151)',
+                  backgroundColor: location.pathname === '/signup' ? 'rgba(249,115,22,0.08)' : 'transparent',
+                  fontWeight: location.pathname === '/signup' ? 700 : 500,
                 }}
               >
                 Start free
