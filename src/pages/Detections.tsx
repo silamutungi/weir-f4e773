@@ -9,14 +9,12 @@ import { useTakedownHandler } from '../hooks/useTakedownHandler'
 import type { Detection } from '../hooks/useTakedownHandler'
 import {
   Search,
-  Filter,
   CheckCircle2,
   DollarSign,
   ShieldOff,
   ExternalLink,
   AlertTriangle,
-  RefreshCw,
-  ChevronDown
+  RefreshCw
 } from 'lucide-react'
 
 const MOCK_DETECTIONS: Detection[] = [

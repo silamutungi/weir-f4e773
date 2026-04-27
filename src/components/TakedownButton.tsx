@@ -36,7 +36,7 @@ export default function TakedownButton({
     const res = await initiateTakedown(detection, reason, notes)
     if (res?.success && res.referenceId) {
       onSuccess?.(res.referenceId)
-    } else if (status === 'error' && error) {
+    } else if (error) {
       onError?.(error)
     }
   }, [status, detection, reason, notes, initiateTakedown, resetTakedown, onSuccess, onError, error])
