@@ -1,21 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { type Detection, type DetectionStatus } from '../types'
+import { type DetectionStatus } from '../types'
+import { useDetections } from '../context/DetectionsContext'
 import AppLayout from '../components/AppLayout'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Shield, Loader2, ExternalLink, CheckCircle, DollarSign, Trash2, AlertTriangle } from 'lucide-react'
 import { formatRelativeTime } from '../lib/utils'
-
-const SEED: Detection[] = [
-  { id: '1', user_id: 'demo', platform: 'Instagram', url: 'https://instagram.com/p/demo1', title: 'Nike ad using your photo in a reel', thumbnail_url: null, status: 'pending', match_confidence: 97, detected_at: new Date(Date.now() - 3600000).toISOString(), created_at: new Date(Date.now() - 3600000).toISOString(), deleted_at: null },
-  { id: '2', user_id: 'demo', platform: 'YouTube', url: 'https://youtube.com/watch?v=demo2', title: 'Fitness brand thumbnail featuring your likeness', thumbnail_url: null, status: 'monetized', match_confidence: 92, detected_at: new Date(Date.now() - 86400000).toISOString(), created_at: new Date(Date.now() - 86400000).toISOString(), deleted_at: null },
-  { id: '3', user_id: 'demo', platform: 'TikTok', url: 'https://tiktok.com/@demo3', title: 'AI-generated deepfake in sports clip', thumbnail_url: null, status: 'takedown', match_confidence: 88, detected_at: new Date(Date.now() - 172800000).toISOString(), created_at: new Date(Date.now() - 172800000).toISOString(), deleted_at: null },
-  { id: '4', user_id: 'demo', platform: 'Twitter', url: 'https://twitter.com/demo4', title: 'Crypto project using your image in banner', thumbnail_url: null, status: 'disputed', match_confidence: 95, detected_at: new Date(Date.now() - 259200000).toISOString(), created_at: new Date(Date.now() - 259200000).toISOString(), deleted_at: null },
-  { id: '5', user_id: 'demo', platform: 'Facebook', url: 'https://facebook.com/demo5', title: 'Local business ad with your photo', thumbnail_url: null, status: 'approved', match_confidence: 99, detected_at: new Date(Date.now() - 345600000).toISOString(), created_at: new Date(Date.now() - 345600000).toISOString(), deleted_at: null }
-]
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'var(--color-warning)',
@@ -27,58 +19,20 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function Detections() {
   const navigate = useNavigate()
-  const [detections, setDetections] = useState<Detection[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { detections, loading, error, updateStatus, softDelete, reload } = useDetections()
   const [actionLoading, setActionLoading] = useState<string | null>(null)
 
-  async function load() {
-    setLoading(true)
-    setError(null)
-    if (!isSupabaseConfigured) {
-      await new Promise((r) => setTimeout(r, 500))
-      setDetections(SEED)
-      setLoading(false)
-      return
-    }
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) { navigate('/login'); return }
-      const result = await (supabase.from('weir_detections').select('*').eq('user_id', session.user.id).is('deleted_at', null).order('detected_at', { ascending: false }) as any)
-      if (result.error) throw new Error(result.error.message)
-      setDetections(result.data ?? [])
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load detections')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function updateStatus(id: string, status: DetectionStatus) {
+  async function handleUpdateStatus(id: string, status: DetectionStatus) {
     setActionLoading(id + status)
-    if (!isSupabaseConfigured) {
-      setDetections((prev) => prev.map((d) => d.id === id ? { ...d, status } : d))
-      setActionLoading(null)
-      return
-    }
-    await (supabase.from('weir_detections').update({ status } as any).eq('id', id) as any)
-    setDetections((prev) => prev.map((d) => d.id === id ? { ...d, status } : d))
+    await updateStatus(id, status)
     setActionLoading(null)
   }
 
-  async function softDelete(id: string) {
+  async function handleSoftDelete(id: string) {
     setActionLoading(id + 'delete')
-    if (!isSupabaseConfigured) {
-      setDetections((prev) => prev.filter((d) => d.id !== id))
-      setActionLoading(null)
-      return
-    }
-    await (supabase.from('weir_detections').update({ deleted_at: new Date().toISOString() } as any).eq('id', id) as any)
-    setDetections((prev) => prev.filter((d) => d.id !== id))
+    await softDelete(id)
     setActionLoading(null)
   }
-
-  useEffect(() => { load() }, [])
 
   return (
     <AppLayout>
@@ -92,7 +46,7 @@ export default function Detections() {
           {loading ? (
             <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--color-primary)' }} /></div>
           ) : error ? (
-            <div className="text-center py-12"><p className="mb-4" style={{ color: 'var(--color-error)' }}>{error}</p><Button variant="outline" size="sm" onClick={load}>Retry</Button></div>
+            <div className="text-center py-12"><p className="mb-4" style={{ color: 'var(--color-error)' }}>{error}</p><Button variant="outline" size="sm" onClick={reload}>Retry</Button></div>
           ) : detections.length === 0 ? (
             <div className="text-center py-16">
               <Shield className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--color-border)' }} />
@@ -116,16 +70,16 @@ export default function Detections() {
                       <a href={d.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-8 h-8 rounded" aria-label="View source">
                         <ExternalLink className="w-4 h-4" style={{ color: 'var(--color-text-muted)' }} />
                       </a>
-                      <Button variant="ghost" size="sm" onClick={() => updateStatus(d.id, 'approved')} disabled={actionLoading === d.id + 'approved'} aria-label="Approve" className="w-8 h-8 p-0">
+                      <Button variant="ghost" size="sm" onClick={() => handleUpdateStatus(d.id, 'approved')} disabled={actionLoading === d.id + 'approved'} aria-label="Approve" className="w-8 h-8 p-0">
                         <CheckCircle className="w-4 h-4" style={{ color: 'var(--color-success)' }} />
                       </Button>
-                      <Button variant="ghost" size="sm" onClick={() => updateStatus(d.id, 'monetized')} disabled={actionLoading === d.id + 'monetized'} aria-label="Monetize" className="w-8 h-8 p-0">
+                      <Button variant="ghost" size="sm" onClick={() => handleUpdateStatus(d.id, 'monetized')} disabled={actionLoading === d.id + 'monetized'} aria-label="Monetize" className="w-8 h-8 p-0">
                         <DollarSign className="w-4 h-4" style={{ color: 'var(--color-info)' }} />
                       </Button>
-                      <Button variant="ghost" size="sm" onClick={() => updateStatus(d.id, 'takedown')} disabled={actionLoading === d.id + 'takedown'} aria-label="Takedown" className="w-8 h-8 p-0">
+                      <Button variant="ghost" size="sm" onClick={() => handleUpdateStatus(d.id, 'takedown')} disabled={actionLoading === d.id + 'takedown'} aria-label="Takedown" className="w-8 h-8 p-0">
                         <AlertTriangle className="w-4 h-4" style={{ color: 'var(--color-error)' }} />
                       </Button>
-                      <Button variant="ghost" size="sm" onClick={() => softDelete(d.id)} disabled={actionLoading === d.id + 'delete'} aria-label="Dismiss" className="w-8 h-8 p-0">
+                      <Button variant="ghost" size="sm" onClick={() => handleSoftDelete(d.id)} disabled={actionLoading === d.id + 'delete'} aria-label="Dismiss" className="w-8 h-8 p-0">
                         <Trash2 className="w-4 h-4" style={{ color: 'var(--color-text-muted)' }} />
                       </Button>
                     </div>
